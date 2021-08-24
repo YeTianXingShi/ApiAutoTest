@@ -1,6 +1,7 @@
 from DBcore.DbConfig import DbConfig
 from Request.ZhenGeneral import ZhenGeneral
 from Request.ZhenHeaders import ZhenHeaders
+from Request.ZhenPayload import ZhenPayload
 from Request.ZhenRequest import ZhenRequest
 from Tools.RmeLogin import RmeLogin
 
@@ -41,7 +42,7 @@ class EasyRequest:
         self.easy_headers = ZhenHeaders()
         self.easy_headers.add_header('login-token', token)
 
-    def start(self, rid):
+    def start(self, rid, payload=''):
         # 数据库连接
         con = DbConfig().get_connect()
         cursor = con.cursor()
@@ -50,13 +51,11 @@ class EasyRequest:
         sql_request = "SELECT * FROM yh_test_tool.aat_requests WHERE id = %s"
         cursor.execute(sql_request, rid)
         result = cursor.fetchone()
-        db_application = result['application']
         db_url = result['url']
         db_payload = result['payload']
         db_headers = result['headers']
         db_remark = result['remark']
         db_method = result['method']
-        db_env = result['env']
 
         # 关闭数据库链接
         con.close()
@@ -66,21 +65,24 @@ class EasyRequest:
 
         # todo payload拓展
         # 请求参数封装
-        # easy_payload = ZhenPayload()
+        easy_payload = ZhenPayload()
 
         # todo header信息拓展
 
-        # 发送请求
-        easy_request = ZhenRequest(burl=easy_general.get_burl(), method=easy_general.get_method(),
-                                   headers=self.easy_headers.headers,
-                                   payload=db_payload)
+        if payload == '':
+            # 发送请求
+            easy_request = ZhenRequest(burl=easy_general.get_burl(), method=easy_general.get_method(),
+                                       headers=self.easy_headers.headers,
+                                       payload=db_payload)
+            print("参数来自数据库")
+        else:
+            easy_request = ZhenRequest(burl=easy_general.get_burl(), method=easy_general.get_method(),
+                                       headers=self.easy_headers.headers,
+                                       payload=payload)
+            print("参数来自带调用入参")
+
         response = easy_request.start_requests()
 
         # 返回请求结果
         print(response)
         return response
-
-
-# test
-test_a = EasyRequest(user='80663835', application="order-plan-view", env="test")
-test_a.start(rid=1)

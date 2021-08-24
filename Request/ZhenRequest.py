@@ -10,7 +10,7 @@ class ZhenRequest:
 
     @staticmethod
     def _post_z(self):
-        r = requests.post(self.burl, headers=self.headers, data=self.payload)
+        r = requests.post(self.burl, headers=self.headers, data=self.payload.encode('utf-8'))
         return r.text
 
     @staticmethod
