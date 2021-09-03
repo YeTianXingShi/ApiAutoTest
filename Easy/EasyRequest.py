@@ -1,7 +1,7 @@
 from DBcore.DbConfig import DbConfig
 from Request.ZhenGeneral import ZhenGeneral
 from Request.ZhenHeaders import ZhenHeaders
-from Request.ZhenPayload import ZhenPayload
+# from Request.ZhenPayload import ZhenPayload
 from Request.ZhenRequest import ZhenRequest
 from Tools.RmeLogin import RmeLogin
 
@@ -42,7 +42,7 @@ class EasyRequest:
         self.easy_headers = ZhenHeaders()
         self.easy_headers.add_header('login-token', token)
 
-    def start(self, rid, payload=''):
+    def start(self, rid='1', payload='', url='', method=''):
         # 数据库连接
         con = DbConfig().get_connect()
         cursor = con.cursor()
@@ -53,19 +53,23 @@ class EasyRequest:
         result = cursor.fetchone()
         db_url = result['url']
         db_payload = result['payload']
-        db_headers = result['headers']
-        db_remark = result['remark']
+        # db_headers = result['headers']
+        # db_remark = result['remark']
         db_method = result['method']
 
         # 关闭数据库链接
         con.close()
 
         # 请求信息初始化
-        easy_general = ZhenGeneral(domain=self.domain[self.application], url=db_url, method=db_method)
+        # url和method接收传递参数
+        if url == '':
+            easy_general = ZhenGeneral(domain=self.domain[self.application], url=db_url, method=db_method)
+        else:
+            easy_general = ZhenGeneral(domain=self.domain[self.application], url=url, method=method)
 
         # todo payload拓展
         # 请求参数封装
-        easy_payload = ZhenPayload()
+        # easy_payload = ZhenPayload()
 
         # todo header信息拓展
 
