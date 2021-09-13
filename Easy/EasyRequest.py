@@ -33,6 +33,10 @@ class EasyRequest:
             # todo 改成数据库配置
             self.domain['order-plan-view'] = "http://sit.order-plan-view.sitapis.yonghui.cn"
             self.domain['user-center'] = "http://sit.usercenter.sitapis.yonghui.cn"
+            self.domain['order-fresh'] = "http://sit.order-fresh.sitapis.yonghui.cn"
+            self.domain['ordercenter-view'] = "http://sit.ordercenter-view.sitapis.yonghui.cn"
+        else:
+            print("选择的应用 or 环境未配置")
 
         # 登录
         easy_login = RmeLogin(domain=self.domain['user-center'], usernames=user, password=db_password)
