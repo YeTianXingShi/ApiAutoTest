@@ -29,6 +29,5 @@ class RmeLogin:
                                      login_payload.get_payload())
         login_response = login_requests.start_requests()
         login_token = json.loads(login_response)['result']['loginToken']
-
         return login_token
 

@@ -30,7 +30,7 @@ payload1 = json.loads('{"tagCode":"01","tagName":"云超平台","bankAccount":"1
                       '"firstTempSave":1,"operationFlag":2,"paymentAmount":"12","paymentMethod":"1",'
                       '"purchaseGroup":"U03 烘焙课","attachmentsVOs":[],"paymentPurpose":"te",'
                       '"fullNameOfPayee":"福建长富乳品有限公司","inventoryAmount":"31","paymentUnitName":"福建永辉文化传媒有限公司",'
-                      '"saleOfInventory":"23","purchaseOrgCodes":"P001","purchaseOrgNames":"永辉福建大区采购组织",'
+                      '"saleOfInventory":"23","purchaseOrgCodes":"P002","purchaseOrgNames":"永辉福建大区采购组织",'
                       '"estimateDigestDays":"31","purchaseGroupCodes":"U03","purchaseGroupNames":"烘焙课",'
                       '"expectedDateOfArrival":"2021-08-27","supplierPaymentAmount":"116765.50",'
                       '"unWrittenPaymentAmount":"82940","isApplyPaymentNotDeductible":"0"}')
@@ -44,7 +44,7 @@ class PrePaymentProcess:
 
     def change_value(self, parameter_key, parameter_value):
         self.payload[parameter_key] = parameter_value
-        print("成功修改 " + parameter_key + " 的值为 " + parameter_value)
+        print("成功修改 " + str(parameter_key) + " 的值为 " + str(parameter_value))
 
     # 修改标签
     def change_tag(self, tag):
@@ -88,8 +88,14 @@ class PrePaymentProcess:
                              payload='{"supplierCode": "S00192"}')
         print(self.payload['supplierCode'])
         press = json.loads(press)
+
+        press['result']['unWrittenPaymentAmount'] = "1000000000"
+
+        # 临时
         self.change_value(parameter_key='supplierPaymentAmount',
-                          parameter_value=press['result']['supplierPaymentAmount'])
+                          parameter_value=500)
+        # self.change_value(parameter_key='supplierPaymentAmount',
+        #                   parameter_value=press['result']['supplierPaymentAmount'])
         self.change_value(parameter_key='unWrittenPaymentAmount',
                           parameter_value=press['result']['unWrittenPaymentAmount'])
         return json.dumps(self.payload)
@@ -99,8 +105,7 @@ PrePaymentProcess = PrePaymentProcess(payload=payload1)
 PrePaymentProcess.change_tag('02')
 PrePaymentProcess.change_supplier('S00192')
 PrePaymentProcess.change_payment_unit('2104')
-PrePaymentProcess.change_payment_amount('10000000')
-
+PrePaymentProcess.change_payment_amount('10000001')
 payload = PrePaymentProcess.get_payload()
 
 # 请求发起

@@ -65,11 +65,12 @@ class EasyRequest:
         con.close()
 
         # 请求信息初始化
-        # url和method接收传递参数
+        # url接收传递参数
         if url == '':
             easy_general = ZhenGeneral(domain=self.domain[self.application], url=db_url, method=db_method)
         else:
-            easy_general = ZhenGeneral(domain=self.domain[self.application], url=url, method=method)
+            # print("URL被自定义")
+            easy_general = ZhenGeneral(domain=self.domain[self.application], url=url, method=db_method)
 
         # todo payload拓展
         # 请求参数封装
@@ -77,19 +78,30 @@ class EasyRequest:
 
         # todo header信息拓展
 
+        # # 文件上传请求修改header信息
+        if easy_general.get_method() == 'Files':
+            # print("本次接口请求有上传文件")
+            self.easy_headers.del_header('Content-Type')
+            # print(self.easy_headers.headers)
+
         if payload == '':
             # 发送请求
             easy_request = ZhenRequest(burl=easy_general.get_burl(), method=easy_general.get_method(),
                                        headers=self.easy_headers.headers,
                                        payload=db_payload)
-            print("参数来自数据库")
+            # print("参数来自数据库")
         else:
             easy_request = ZhenRequest(burl=easy_general.get_burl(), method=easy_general.get_method(),
                                        headers=self.easy_headers.headers,
                                        payload=payload)
-            print("参数来自带调用入参")
+            # print("参数来自带调用入参")
 
+        # print(self.easy_headers.headers)
         response = easy_request.start_requests()
+
+        # # 文件上传请求修改header信息恢复
+        if easy_general.get_method() == 'Files':
+            self.easy_headers.add_header('Content-Type', "application/json;charset=UTF-8")
 
         # 返回请求结果
         print(response)

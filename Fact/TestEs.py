@@ -1,2 +1,2 @@
-class TestEs():
+class TestEs:
     pass

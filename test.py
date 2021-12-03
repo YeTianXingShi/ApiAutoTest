@@ -28,8 +28,8 @@ a_payload.add_payload('tabLabel', "5")
 url = 'http://sit.order-fresh.sitapis.yonghui.cn/fresh/shoppingcart/pc/upload?normalBusiness=0'
 url2 = 'http://httpbin.org/post'
 url3 = 'http://sit.order-fresh.sitapis.yonghui.cn/fresh/dis_order/upload'
-# files = {'file': open('Files/test.xlsx', 'rb')}
-# files = {'file': ('test.xls', open('Files/test.xlsx', 'rb'), 'application/vnd.ms-excel', {'Expires': '0'})}
+# files = {'file': open('Files/手工单正常.xlsx', 'rb')}
+# files = {'file': ('test.xls', open('Files/手工单正常.xlsx', 'rb'), 'application/vnd.ms-excel', {'Expires': '0'})}
 # files2 = {'file': ('test2.xls', open('Files/test2.xlsx', 'rb'), 'application/vnd.ms-excel', {'Expires': '0'})}
 
 # a_headers.del_header('Content-Type')

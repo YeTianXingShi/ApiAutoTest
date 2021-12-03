@@ -4,13 +4,13 @@ from time import sleep
 from Easy.EasyRequest import EasyRequest
 
 test_a = EasyRequest(user='80996805', application="order-fresh", env="test")
-
 # 创建直采单 获取直采单号
+payload1 = " 1"
 a = test_a.start(rid=5)
 b = json.loads(a)
 c1 = b['result']['applyOrderNo']
 
-print("等待拆单中 预计30S")
+print("等待拆单中 预计50S")
 sleep(50)
 
 # 去订单明细跟踪查拆单号
@@ -22,4 +22,4 @@ payload2 = json.dumps(payload2)
 a = test_b.start(rid=6, payload=payload2)
 b = json.loads(a)
 c2 = b['page']['result'][0]['splitOrderNo']
-print("拆单号为" + c2)
+print("拆单号为 " + c2)
